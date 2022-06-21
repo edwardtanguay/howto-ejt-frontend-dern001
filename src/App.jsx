@@ -4,6 +4,8 @@ import './App.scss';
 import { Noun } from './components/Noun';
 import { Book } from './components/Book';
 import { TechPerson } from './components/TechPerson';
+import { Setting } from './components/Setting';
+import { Employee } from './components/Employee';
 
 const separator = '|';
 const baseUrl = 'http://localhost:3007';
@@ -43,6 +45,27 @@ function App() {
 						item.quickInfo +
 						separator +
 						item.body,
+					item,
+				});
+			});
+
+			Object.entries(siteData.settings).forEach((entry) => {
+				const key = entry[0];
+				const value = entry[1];
+				_searchItems.push({
+					kind: 'setting',
+					bulkSearch: key + separator +value,
+					item: {
+						key,
+						value,
+					}
+				});
+			});
+
+			siteData.employees.forEach((item) => {
+				_searchItems.push({
+					kind: 'employee',
+					bulkSearch: item.FIRST_NAME + separator + item.LAST_NAME,
 					item,
 				});
 			});
@@ -87,6 +110,12 @@ function App() {
 									)}
 									{item.kind === 'techPerson' && (
 										<TechPerson item={item.item} />
+									)}
+									{item.kind === 'setting' && (
+										<Setting item={item.item} />
+									)}
+									{item.kind === 'employee' && (
+										<Employee item={item.item} />
 									)}
 								</>
 							);
