@@ -43,8 +43,9 @@ legend {
 
 .techPerson {
 	.quickInfo {
-		color:rgb(232, 199, 139);
+		color: rgb(232, 199, 139);
 	}
+
 	.body {
 		font-size: 1.1rem;
 		font-style: italic;
@@ -62,11 +63,13 @@ legend {
 
 	.info {
 		margin-bottom: -10px;
+
 		.title {
 			font-weight: bold;
 			font-size: 1.4rem;
 			text-align: left;
 		}
+
 		.description {
 			font-size: 1.2rem;
 			text-align: left;
@@ -82,7 +85,29 @@ legend {
 }
 
 .translation {
-	.fromLanguage, .toLanguage {
+
+	.fromLanguage,
+	.toLanguage {
 		color: #999;
+	}
+}
+
+.job {
+	h1 {
+		margin: 0;
+		font-size: 1.8rem;
+	}
+
+	h2 {
+		margin: 0;
+		font-size: 1.6rem;
+	}
+
+	ul {
+		font-size: 1.3rem;
+	}
+
+	a {
+		color: orange;
 	}
 }

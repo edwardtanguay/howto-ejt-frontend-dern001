@@ -7,6 +7,7 @@ import { TechPerson } from './components/TechPerson';
 import { Setting } from './components/Setting';
 import { Employee } from './components/Employee';
 import { Translation } from './components/Translation';
+import { Job } from './components/Job';
 
 const separator = '|';
 const baseUrl = 'http://localhost:3007';
@@ -91,6 +92,14 @@ function App() {
 				});
 			});
 
+			siteData.jobs.forEach((item) => {
+				_searchItems.push({
+					kind: 'job',
+					bulkSearch: item.html,
+					item,
+				});
+			});
+
 			setSearchItems(_searchItems);
 			setFilteredSearchItems([]);
 		})();
@@ -142,6 +151,9 @@ function App() {
 									)}
 									{item.kind === 'translation' && (
 										<Translation item={item.item} />
+									)}
+									{item.kind === 'job' && (
+										<Job item={item.item} />
 									)}
 								</>
 							);
