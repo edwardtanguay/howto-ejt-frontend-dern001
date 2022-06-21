@@ -8,6 +8,7 @@ import { Setting } from './components/Setting';
 import { Employee } from './components/Employee';
 import { Translation } from './components/Translation';
 import { Job } from './components/Job';
+import { LandscapePhoto } from './components/LandscapePhoto';
 
 const separator = '|';
 const baseUrl = 'http://localhost:3007';
@@ -100,6 +101,15 @@ function App() {
 				});
 			});
 
+			siteData.landscapePhotos.forEach((item) => {
+				_searchItems.push({
+					kind: 'landscapePhoto',
+					bulkSearch: item,
+					item
+				});
+			});
+
+
 			setSearchItems(_searchItems);
 			setFilteredSearchItems([]);
 		})();
@@ -107,13 +117,15 @@ function App() {
 
 	const handleSearch = (e) => {
 		const searchText = e.target.value.trim();
+		let _filteredSearchItems = [];
 		if (searchText.length >= 3) {
-			let _filteredSearchItems = searchItems.filter((m) =>
+			_filteredSearchItems = searchItems.filter((m) =>
 				m.bulkSearch.toLowerCase().includes(searchText.toLowerCase())
 			);
-			if (searchText === '') {
-				_filteredSearchItems = [];
-			}
+			setFilteredSearchItems(_filteredSearchItems);
+		}
+		if (searchText === '') {
+			_filteredSearchItems = [];
 			setFilteredSearchItems(_filteredSearchItems);
 		}
 	};
@@ -154,6 +166,9 @@ function App() {
 									)}
 									{item.kind === 'job' && (
 										<Job item={item.item} />
+									)}
+									{item.kind === 'landscapePhoto' && (
+										<LandscapePhoto item={item.item} baseUrl={baseUrl} />
 									)}
 								</>
 							);
