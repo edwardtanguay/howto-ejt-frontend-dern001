@@ -1,0 +1,75 @@
+body {
+	padding: 20px;
+	text-align: center;
+	background-color: #282c34;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-size: 1.6rem;
+	color: white;
+}
+
+h1 {
+	margin: 20px 0 10px 0;
+}
+
+input.searchBox {
+	font-size: 2rem;
+	margin: 0 0 30px 0;
+}
+
+b {
+	color: yellow;
+}
+
+.item {
+	background: #222;
+	width: 800px;
+	padding: 10px 20px 30px 20px;
+	margin: 0 0 10px 0;
+	border: 1px solid #444;
+	border-radius: 5px;
+}
+
+legend {
+	color: rgb(237, 237, 137);
+}
+
+.item {
+	padding: 20px 30px 40px;
+	text-align: left;
+}
+
+.techPerson {
+	.quickInfo {
+		color:rgb(232, 199, 139);
+	}
+	.body {
+		font-size: 1.1rem;
+		font-style: italic;
+		color: #777;
+	}
+}
+
+.book {
+	display: flex;
+
+	img {
+		height: 200px;
+		margin-right: 20px;
+	}
+
+	.info {
+		margin-bottom: -10px;
+		.title {
+			font-weight: bold;
+			font-size: 1.4rem;
+			text-align: left;
+		}
+		.description {
+			font-size: 1.2rem;
+			text-align: left;
+		}
+	}
+}

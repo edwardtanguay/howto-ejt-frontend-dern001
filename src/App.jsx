@@ -1,44 +1,94 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import './App.css';
+import './App.scss';
+import { Noun } from './components/Noun';
+import { Book } from './components/Book';
+import { TechPerson } from './components/TechPerson';
 
+const separator = '|';
 const baseUrl = 'http://localhost:3007';
 const url = `${baseUrl}/all`;
 
 function App() {
-	const [siteData, setSiteData] = useState({});
-	// const [searchItems, setSearchItems] = useState([]);
+	const [searchItems, setSearchItems] = useState([]);
+	const [filteredSearchItems, setFilteredSearchItems] = useState([]);
 
 	useEffect(() => {
 		(async () => {
-			setSiteData((await axios.get(url)).data);
+			const siteData = (await axios.get(url)).data;
+			const _searchItems = [];
+
+			siteData.nouns.forEach((item) => {
+				_searchItems.push({
+					kind: 'noun',
+					bulkSearch: item.singular,
+					item,
+				});
+			});
+
+			siteData.books.forEach((item) => {
+				_searchItems.push({
+					kind: 'book',
+					bulkSearch: item.title + separator + item.description,
+					item,
+				});
+			});
+
+			siteData.techPersons.forEach((item) => {
+				_searchItems.push({
+					kind: 'techPerson',
+					bulkSearch:
+						item.fullName +
+						separator +
+						item.quickInfo +
+						separator +
+						item.body,
+					item,
+				});
+			});
+
+			setSearchItems(_searchItems);
+			setFilteredSearchItems([]);
 		})();
 	}, []);
 
+	const handleSearch = (e) => {
+		const searchText = e.target.value.trim();
+		let _filteredSearchItems = searchItems.filter((m) =>
+			m.bulkSearch.toLowerCase().includes(searchText.toLowerCase())
+		);
+		if (searchText === '') {
+			_filteredSearchItems = [];
+		}
+		setFilteredSearchItems(_filteredSearchItems);
+	};
+
 	return (
 		<div className="App">
-			{Object.entries(siteData).length === 0 ? (
+			{searchItems.length === 0 ? (
 				<div>Loading...</div>
 			) : (
 				<>
-					<h1>Landscape Photos</h1>
-					<div className="landscapePhotos">
-						{siteData.landscapePhotos.map((photo, i) => {
+					<h1>Info Search</h1>
+					<input
+						className="searchBox"
+						autoFocus
+						onChange={(e) => handleSearch(e)}
+					/>
+					<div className="searchItems">
+						{filteredSearchItems.map((item, i) => {
 							return (
-								<div key={i}>
-									<img src={`${baseUrl}/images/${photo}`} />
-								</div>
-							);
-						})}
-					</div>
-
-					<h1>Nouns</h1>
-					<div className="nouns">
-						{siteData.nouns.map((noun, i) => {
-							return (
-								<div key={i}>
-									{noun.article} {noun.singular}
-								</div>
+								<>
+									{item.kind === 'noun' && (
+										<Noun item={item.item} />
+									)}
+									{item.kind === 'book' && (
+										<Book item={item.item} />
+									)}
+									{item.kind === 'techPerson' && (
+										<TechPerson item={item.item} />
+									)}
+								</>
 							);
 						})}
 					</div>
