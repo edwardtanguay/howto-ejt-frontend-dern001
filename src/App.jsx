@@ -1,45 +1,51 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import './App.css';
+
+const baseUrl = 'http://localhost:3007';
+const url = `${baseUrl}/all`;
 
 function App() {
-  const [count, setCount] = useState(0)
+	const [siteData, setSiteData] = useState({});
+	// const [searchItems, setSearchItems] = useState([]);
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
+	useEffect(() => {
+		(async () => {
+			setSiteData((await axios.get(url)).data);
+		})();
+	}, []);
+
+	return (
+		<div className="App">
+			{Object.entries(siteData).length === 0 ? (
+				<div>Loading...</div>
+			) : (
+				<>
+					<h1>Landscape Photos</h1>
+					<div className="landscapePhotos">
+						{siteData.landscapePhotos.map((photo, i) => {
+							return (
+								<div key={i}>
+									<img src={`${baseUrl}/images/${photo}`} />
+								</div>
+							);
+						})}
+					</div>
+
+					<h1>Nouns</h1>
+					<div className="nouns">
+						{siteData.nouns.map((noun, i) => {
+							return (
+								<div key={i}>
+									{noun.article} {noun.singular}
+								</div>
+							);
+						})}
+					</div>
+				</>
+			)}
+		</div>
+	);
 }
 
-export default App
+export default App;
