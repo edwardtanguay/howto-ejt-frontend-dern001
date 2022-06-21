@@ -6,6 +6,7 @@ import { Book } from './components/Book';
 import { TechPerson } from './components/TechPerson';
 import { Setting } from './components/Setting';
 import { Employee } from './components/Employee';
+import { Translation } from './components/Translation';
 
 const separator = '|';
 const baseUrl = 'http://localhost:3007';
@@ -31,7 +32,12 @@ function App() {
 			siteData.books.forEach((item) => {
 				_searchItems.push({
 					kind: 'book',
-					bulkSearch: item.title + separator + item.description,
+					bulkSearch:
+						item.title +
+						separator +
+						item.description +
+						separator +
+						item.language,
 					item,
 				});
 			});
@@ -54,11 +60,11 @@ function App() {
 				const value = entry[1];
 				_searchItems.push({
 					kind: 'setting',
-					bulkSearch: key + separator +value,
+					bulkSearch: key + separator + value,
 					item: {
 						key,
 						value,
-					}
+					},
 				});
 			});
 
@@ -70,6 +76,21 @@ function App() {
 				});
 			});
 
+			siteData.translations.forEach((item) => {
+				_searchItems.push({
+					kind: 'translation',
+					bulkSearch:
+						item.fromLanguage +
+						separator +
+						item.toLanguage +
+						separator +
+						item.fromPhrase +
+						separator +
+						item.toPhrase,
+					item,
+				});
+			});
+
 			setSearchItems(_searchItems);
 			setFilteredSearchItems([]);
 		})();
@@ -77,13 +98,15 @@ function App() {
 
 	const handleSearch = (e) => {
 		const searchText = e.target.value.trim();
-		let _filteredSearchItems = searchItems.filter((m) =>
-			m.bulkSearch.toLowerCase().includes(searchText.toLowerCase())
-		);
-		if (searchText === '') {
-			_filteredSearchItems = [];
+		if (searchText.length >= 3) {
+			let _filteredSearchItems = searchItems.filter((m) =>
+				m.bulkSearch.toLowerCase().includes(searchText.toLowerCase())
+			);
+			if (searchText === '') {
+				_filteredSearchItems = [];
+			}
+			setFilteredSearchItems(_filteredSearchItems);
 		}
-		setFilteredSearchItems(_filteredSearchItems);
 	};
 
 	return (
@@ -116,6 +139,9 @@ function App() {
 									)}
 									{item.kind === 'employee' && (
 										<Employee item={item.item} />
+									)}
+									{item.kind === 'translation' && (
+										<Translation item={item.item} />
 									)}
 								</>
 							);
